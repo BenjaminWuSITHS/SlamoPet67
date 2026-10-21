@@ -1,36 +1,39 @@
-class Hero:                                  # 1. the class name (Capitalized)
-    def __init__(self, name, money, hp=100): # 2. setup method, runs on creation
-        self.name = name                     # 3. attributes saved on "self"
-        self.money = money
-        self.hp = hp
-
-    def potion(self):                        # 4. a method - always takes self first
-        self.hp += 10
-
-class Hero:                                  # 1. the class name (Capitalized)
-    def __init__(self, name, money, hp=100): # 2. setup method, runs on creation
-        self.name = name                     # 3. attributes saved on "self"
-        self.money = money
-        self.hp = hp
-
-    def potion(self):                        # 4. a method - always takes self first
-        self.hp += 10
-
-athena = Hero("Athena", 500)                 # 5. create an object
-athena.potion()                              # 6. call a method with a dot
-print(athena.hp)                             # 110
-
-class Ethan():
-      def __init__(self, chillness, coolness):
-           self.chillness = chillness
-           self.coolness = coolness
-      def chill(self):
-            print("I am SOOOOO chill")
-            self.chillness += 10
-      def cool(self):
-            print("I am SOOOOO cool")
-            self.coolness += 10
-
-ethan = Ethan("ethan", 0, 0)
-
-ethan.chillness
+def alpaca(N, X):
+    list = []
+    failed = False
+    for i in range(N):
+        trynum = 1
+        pastnum = 0 
+        if i == 0:
+            list.append(1)
+            continue
+        else:
+            pastnum = list[i-1]
+        currentX = 0
+        while True:
+            if (trynum + pastnum) % 2 == 0 and currentX != X:
+                list.append(trynum)
+                print(list)
+                currentX += 1
+                break
+            elif (trynum + pastnum) % 2 != 0 and currentX == X:
+                list.append(trynum)
+                break
+            elif trynum > 1000000000:
+                failed = True
+                break
+    newlist = []
+    if failed:
+        print("-1")
+    else:
+        while len(list) > 0:
+            newlist.append(list[len(list) - 1])
+            list.remove(list[len(list) - 1])
+    string = ""
+    for i in newlist:
+        if i + 1 == len(newlist):
+            string += i
+        else:
+            string = string + str(i) + " "
+    print(string)
+alpaca(6, 4)
