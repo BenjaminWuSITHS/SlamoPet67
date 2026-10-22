@@ -22,9 +22,19 @@ class pet:                                  # 1. the class name (Capitalized)
     def ouch(self):
         self.hp -= 10
 
+def getstats():
+    print(pets.name)
+    print("--------------------------")
+    print(f"Health: {pets.hp}")
+    print(f"The current time = {pets.sleep}:00")
+    print(f"Hunger: {pets.hunger}")
+    print("--------------------------")
 
+def action():
+    print("j")
 
-input("What would you like to name ur pet?") = pet("Ethan Chen")                
+name = input("What would you like to name ur pet?")
+pets = pet(name)      
 
-
-
+while pets.hp > 0:
+    
