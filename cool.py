@@ -1,23 +1,27 @@
-class pet:                                  # 1. the class name (Capitalized)
-    def __init__(self, name, hunger=10, sleep=0, hp=100): # 2. setup method, runs on creation
-        self.name = name                     # 3. attributes saved on "self"
+class pet:                                 
+    def __init__(self, name, hunger=0, time=0, hp=100): 
+        self.name = name                     
         self.hunger = hunger
         self.hp = hp
-        self.sleep = sleep
+        self.time = time
 
 
-    def timepasses(self):                        # 4. a method - always takes self first
-        self.hunger -= 1
-        self.sleep += 1
+    def timepasses(self):                        
+        self.hunger += 1
+        self.time += 1
+        if self.time % 12 and self.time != 0:
+            self.time = 0
+        elif self.hunger > 10:
+            self.ouch
 
     def feed(self):
-        self.hunger += 3
+        self.hunger -= 3
         self.timepasses
 
-    def takeabigassnap(self):
-        for i in range(5):
+    def nap(self):
+        for i in range(3):
             self.timepasses
-        self.sleep += 8
+        self.time += 8
 
     def ouch(self):
         self.hp -= 10
@@ -26,7 +30,7 @@ def getstats():
     print(pets.name)
     print("--------------------------")
     print(f"Health: {pets.hp}")
-    print(f"The current time = {pets.sleep}:00")
+    print(f"The current time = {pets.time}:00")
     print(f"Hunger: {pets.hunger}")
     print("--------------------------")
 
