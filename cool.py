@@ -16,19 +16,23 @@ class pet:
         self.thirst += 0.5
         self.energy -= 2
         self.time += 1
-        if self.time % 12 and self.time != 0:
+        if self.time % 24 == 0 and self.time != 0:
             self.time = 0
         elif self.thirst > 10 and self.hunger > 10:
             for i in range(2):
-                self.ouch
+                self.ouch()
         elif self.hunger > 10 and self.thirst < 10:
-            self.ouch
+            self.ouch()
         elif self.thirst > 10 and self.hunger < 10:
-            self.ouch
+            self.ouch()
+        elif self.energy == -100:
+            for i in range(8):
+                self.ouch()
 
         
 
     def feed(self):
+        self.timepasses()
         self.hunger -= 3
         self.energy += 15
         self.hp += 15
@@ -39,9 +43,10 @@ class pet:
             self.hunger = 0
         if self.energy > 100:
             self.energy = 100
-        self.timepasses
+        
 
     def drink(self):
+        self.timepasses()
         self.energy += 5
         self.hp += 5
         self.thirst -= 3
@@ -52,24 +57,31 @@ class pet:
             self.thirst = 0
         if self.energy > 100:
             self.energy = 100
-        self.timepasses
 
     def play(self):
+        self.timepasses()
         self.happiness += 1.5
         if self.happiness < 0:
             self.happiness = 0
-            self.energy -= 10
-        if self.happiness <= 3:
+        elif self.happiness <= 3:
             self.happiness += 4
             self.energy -= 15
-        self.timepasses
+        else:
+            self.energy -= 8
+        if self.energy < -100:
+            self.energy = -100
+        
 
     def nap(self):
         for i in range(3):
-            self.timepasses
+            self.timepasses()
         self.time += 8
         self.energy += 20
-        if self.energy > 100:
+        if self.energy <= 39:
+            self.energy +=10
+        if self.energy <= 0:
+            self.energy +=15
+        elif self.energy > 100:
             self.energy = 100
 
     def ouch(self):
@@ -91,18 +103,43 @@ def getstats():
 def action():
     getstats()
     print(f"What would you like to do with {pets.name}?")
-    action = input().lower
+    action = input().lower()
     if action == "nap":
-        pets.nap
-    if action == "nothing":
-        pets.timepasses
-    if action == "feed":
-        pets.feed
-    if action == "drink":
-        pets.drink
-    if action == "play":
-        pets.play
+        if pets.energy == 100:
+            pets.timepasses()
+            return(f"{pets.name} tried to nap but was simply too energetic!")
+        elif 100 > pets.energy >= 90:
+            pets.nap()
+            return(f"{pets.name} did not need this nap, but enjoyed it anyway!")
+        elif 89 > pets.energy >= 40:
+            pets.nap()
+            return(f"{pets.name} had a nice nap!")
+        elif 39 > pets.energy >= 10:
+            pets.nap()
+            return(f"{pets.name} desperately climbed into bed and fell to sleep instantly.")
+        elif 9 > pets.energy >= -50:
+            pets.nap()
+            return(f"{pets.name} went unconscious instantly when being dropped on the bed.")
+        else:
+            pets.nap()
+            return(f"{pets.name} literally almost died crawling to the bed.")
+    elif action == "feed":
+        pets.feed()
+    elif action == "drink":
+        pets.drink()
+    elif action == "play":
+        pets.play()
+    elif action == "punch":
+        pets.ouch()
+        pets.timepasses()
+    else:
+        pets.timepasses()
 
 
 name = input("What would you like to name your pet?")
 pets = pet(name)      
+
+while pets.hp > 0:
+    print(action())
+    print("--------------------------")
+print(f"{pets.name} has died.")
