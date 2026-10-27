@@ -21,41 +21,47 @@ class pet:
         elif self.thirst > 10 and self.hunger > 10:
             for i in range(2):
                 self.ouch()
+                self.happiness -= 2
         elif self.hunger > 10 and self.thirst < 10:
             self.ouch()
+            self.happiness -= 1
         elif self.thirst > 10 and self.hunger < 10:
             self.ouch()
+            self.happiness -= 1
         elif self.energy == -100:
             for i in range(8):
                 self.ouch()
-
+        elif self.happiness < 0:
+            self.happiness = 0
         
 
     def feed(self):
         self.timepasses()
-        self.hunger -= 3
-        self.energy += 15
+        self.hunger -= 3.5
+        self.energy += 17
         self.hp += 15
+        self.happiness +=1
         if self.hunger >= 10:
             self.hunger -= 5
             self.energy += 15
-        if self.hunger < 0:
+        elif self.hunger < 0:
             self.hunger = 0
-        if self.energy > 100:
+        elif self.energy > 100:
             self.energy = 100
-        
+        elif self.happiness < 0:
+            self.happiness = 0   
 
     def drink(self):
         self.timepasses()
-        self.energy += 5
+        self.energy += 7
         self.hp += 5
-        self.thirst -= 3
+        self.thirst -= 3.5
         if self.thirst >= 10:
             self.thirst-= 5
             self.energy += 5
-        if self.thirst < 0:
+        elif self.thirst < 0:
             self.thirst = 0
-        if self.energy > 100:
+        elif self.energy > 100:
             self.energy = 100
 
     def play(self):
@@ -70,6 +76,7 @@ class pet:
             self.energy -= 8
         if self.energy < -100:
             self.energy = -100
+
         
 
     def nap(self):
@@ -77,6 +84,7 @@ class pet:
             self.timepasses()
         self.time += 8
         self.energy += 20
+        self.happiness += 0.5
         if self.energy <= 39:
             self.energy +=10
         if self.energy <= 0:
@@ -124,7 +132,21 @@ def action():
             pets.nap()
             return(f"{pets.name} literally almost died crawling to the bed.")
     elif action == "feed":
-        pets.feed()
+        if pets.hunger == 0:
+            pets.timepasses()
+            return(f"{pets.name} didn't take a bite of its meal")
+        elif 3 > pets.hunger >= 1:
+            pets.nap()
+            return(f"{pets.name} ate their food with a big smirk")
+        elif 6 > pets.hunger >= 3:
+            pets.nap()
+            return(f"{pets.name} quickly gobbled down whatever was on the plate")
+        elif 15 > pets.hunger >= 6:
+            pets.nap()
+            return(f"{pets.name} evis")
+        else:
+            pets.nap()
+            return(f"{pets.name} literally almost died crawling to the bed.")
     elif action == "drink":
         pets.drink()
     elif action == "play":
@@ -132,6 +154,7 @@ def action():
     elif action == "punch":
         pets.ouch()
         pets.timepasses()
+        return(f"You punt {pets.name} across the room, it is beaten up and crying")
     else:
         pets.timepasses()
 
