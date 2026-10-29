@@ -11,6 +11,26 @@ class pet:
         self.energy = energy
 
 
+    def check(self):
+        if self.hunger < 0:
+            self.hunger = 0
+        if self.hunger > 20:
+            self.hunger = 20
+        if self.thirst < 0:
+            self.thirst = 0
+        if self.thirst > 20:
+            self.thirst = 20
+        if self.hp > 100:
+            self.hp = 100
+        if self.happiness > 20:
+            self.happiness = 20
+        if self.happiness < 0:
+            self.happiness = 0
+        if self.energy > 100:
+            self.energy = 100
+        if self.energy < -100:
+            self.energy = -100
+
     def timepasses(self):                        
         self.hunger += 0.5
         self.thirst += 0.5
@@ -18,20 +38,20 @@ class pet:
         self.time += 1
         if self.time % 24 == 0 and self.time != 0:
             self.time = 0
-        elif self.thirst > 10 and self.hunger > 10:
+        if self.thirst > 10 and self.hunger > 10:
             for i in range(2):
                 self.ouch()
                 self.happiness -= 2
-        elif self.hunger > 10 and self.thirst < 10:
+        if self.hunger > 10 and self.thirst < 10:
             self.ouch()
             self.happiness -= 1
-        elif self.thirst > 10 and self.hunger < 10:
+        if self.thirst > 10 and self.hunger < 10:
             self.ouch()
             self.happiness -= 1
-        elif self.energy == -100:
+        if self.energy == -100:
             for i in range(8):
                 self.ouch()
-        elif self.happiness < 0:
+        if self.happiness < 0:
             self.happiness = 0
         
 
@@ -44,12 +64,7 @@ class pet:
         if self.hunger >= 10:
             self.hunger -= 5
             self.energy += 15
-        elif self.hunger < 0:
-            self.hunger = 0
-        elif self.energy > 100:
-            self.energy = 100
-        elif self.happiness < 0:
-            self.happiness = 0   
+        self.check()
 
     def drink(self):
         self.timepasses()
@@ -59,23 +74,22 @@ class pet:
         if self.thirst >= 10:
             self.thirst-= 5
             self.energy += 5
-        elif self.thirst < 0:
-            self.thirst = 0
-        elif self.energy > 100:
-            self.energy = 100
+        self.check()
 
     def play(self):
         self.timepasses()
         self.happiness += 1.5
+        self.energy -= 8
+        self.hunger += 1
+        self.thirst += 1
         if self.happiness < 0:
             self.happiness = 0
-        elif self.happiness <= 3:
+        if self.happiness <= 3:
             self.happiness += 4
             self.energy -= 15
-        else:
-            self.energy -= 8
-        if self.energy < -100:
-            self.energy = -100
+            self.hunger += 0.5
+            self.thirst += 0.5
+        self.check()
 
         
 
@@ -89,23 +103,23 @@ class pet:
             self.energy +=10
         if self.energy <= 0:
             self.energy +=15
-        elif self.energy > 100:
-            self.energy = 100
+        self.check()
 
     def ouch(self):
         self.hp -= 10
+        self.check()
 
 def getstats():
     print(pets.name)
     print("STATS")
     print("--------------------------")
-    print(f"Health: {pets.hp}")
+    print(f"Health: {pets.hp}/100")
     print(f"The current time = {pets.time}:00")
-    print(f"Hunger: {pets.hunger}")
-    print(f"Thirst: {pets.thirst}")
+    print(f"Hunger: {pets.hunger}/20")
+    print(f"Thirst: {pets.thirst}/20")
     print("--------------------------")
-    print(f"Happiness: {pets.happiness}")
-    print(f"Energy: {pets.energy}")
+    print(f"Happiness: {pets.happiness}/20")
+    print(f"Energy: {pets.energy}/100")
     print("--------------------------")
 
 def action():
@@ -135,18 +149,18 @@ def action():
         if pets.hunger == 0:
             pets.timepasses()
             return(f"{pets.name} didn't take a bite of its meal")
-        elif 3 > pets.hunger >= 1:
-            pets.nap()
+        elif 3 > pets.hunger > 0:
+            pets.feed()
             return(f"{pets.name} ate their food with a big smirk")
         elif 6 > pets.hunger >= 3:
-            pets.nap()
+            pets.feed()
             return(f"{pets.name} quickly gobbled down whatever was on the plate")
         elif 15 > pets.hunger >= 6:
-            pets.nap()
-            return(f"{pets.name} evis")
+            pets.feed()
+            return(f"{pets.name} eviserated every ounce of food in the universe...")
         else:
-            pets.nap()
-            return(f"{pets.name} literally almost died crawling to the bed.")
+            pets.feed()
+            return(f"{pets.name}'s limp, hungered skeleton limped acrossed the floor, dead..?")
     elif action == "drink":
         pets.drink()
     elif action == "play":
@@ -165,4 +179,12 @@ pets = pet(name)
 while pets.hp > 0:
     print(action())
     print("--------------------------")
-print(f"{pets.name} has died.")
+
+
+deathstats = [pets.hunger, pets.thirst]
+if max(deathstats) == pets.thirst and max(deathstats) == pets.hunger:
+    print(f"{pets.name}'s shriveled and bare skeleton was already dead, limp, before turning into a pile of dust with a grim skull of {pets.name} ontop. You hear sirens in the background. Evading the police would be easy, you thought as you quickly scramble towards your house. Hiding in the crawlspace, you hear the FBI barging in 'FBI OPEN UP!' You stay absolutely silent. Why did you not nourish your only goal in your life? Unfortunately for you, the FBI prys the floorboards up and you are shot instantly. Your gravestone lies directly across from {pets.name}'s grave. This is your end.")
+elif max(deathstats) == pets.thirst and max(deathstats) != pets.hunger:
+    print(f"{pets.name}'s shriveled body gave its last breath before turning into a small raisin which is picked up by a vulture overhead.")
+elif max(deathstats) == pets.hunger and max(deathstats) != pets.thirst:
+    print(f"{pets.name}'s bare skeleton crawled across the floor, begging for the food in your hand, but it suddenly went limp and was picked up by a vulture overhead.")
