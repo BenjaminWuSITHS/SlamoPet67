@@ -162,9 +162,40 @@ def action():
             pets.feed()
             return(f"{pets.name}'s limp, hungered skeleton limped acrossed the floor, dead..?")
     elif action == "drink":
-        pets.drink()
+        if pets.thirst == 0:
+            pets.timepasses()
+            return(f"{pets.name} didn't take a sip of its drink")
+        elif 3 > pets.hunger > 0:
+            pets.drink()
+            return(f"{pets.name} took a large sip of water.")
+        elif 6 > pets.hunger >= 3:
+            pets.drink()
+            return(f"{pets.name} quenched his thirst quickly!")
+        elif 15 > pets.hunger >= 6:
+            pets.drink()
+            return(f"{pets.name} drank 2 gallons of water on the stop, in one chug.")
+        else:
+            pets.drink()
+            return(f"{pets.name}'s limp, raisin-like body limped acrossed the floor, dead..?")
     elif action == "play":
-        pets.play()
+        if pets.energy < 20 or pets.hunger > 8 or pets.thirst > 8:
+            pets.timepasses()
+            return(f"{pets.name} was too tired or famished to play.")
+        if pets.happiness == 0:
+            pets.play()
+            return(f"{pets.name} had fun in the sun!")
+        elif 3 > pets.happiness > 0:
+            pets.play()
+            return(f"{pets.name}'s face lit up!")
+        elif 6 > pets.happiness >= 3:
+            pets.play()
+            return(f"{pets.name}'s sad expression quickly turned joyous!")
+        elif 15 > pets.happiness >= 6:
+            pets.play()
+            return(f"{pets.name}'s sorrowful and hurt face instantly perked up!")
+        else:
+            pets.play()
+            return(f"{pets.name}? Are you there?")
     elif action == "punch":
         pets.ouch()
         pets.timepasses()
